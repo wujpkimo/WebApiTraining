@@ -495,5 +495,11 @@
             <param name="product">商品資訊</param>
             <returns></returns>
         </member>
+        <member name="M:ProductsApp.Models.ClientsController.GetClient">
+            <summary>
+            取得Client資料
+            </summary>
+            <returns></returns>
+        </member>
     </members>
 </doc>

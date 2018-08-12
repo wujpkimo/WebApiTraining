@@ -11,6 +11,7 @@ using System.Web.Http.Description;
 
 namespace ProductsApp.Models
 {
+    [MyException]
     [RoutePrefix("clients")]
     public class ClientsController : ApiController
     {
@@ -21,6 +22,10 @@ namespace ProductsApp.Models
             db.Configuration.LazyLoadingEnabled = false;
         }
 
+        /// <summary>
+        /// 取得Client資料
+        /// </summary>
+        /// <returns></returns>
         [Route("")]
         // GET: api/Clients
         public IHttpActionResult GetClient()
