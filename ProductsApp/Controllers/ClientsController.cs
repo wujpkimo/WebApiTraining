@@ -23,31 +23,37 @@ namespace ProductsApp.Models
 
         [Route("")]
         // GET: api/Clients
-        public IQueryable<Client> GetClient()
+        public IHttpActionResult GetClient()
         {
-            return db.Client.Take(10);
+            return Ok(db.Client.Take(10));
         }
 
         // GET: api/Clients/5
-        [Route("{id}", Name = nameof(GetNameById))]
+        [Route("{id:int}", Name = nameof(GetNameById))]
         [ResponseType(typeof(Client))]
-        public IHttpActionResult GetNameById(int id)
+        public HttpResponseMessage GetNameById(int id)
         {
             Client client = db.Client.Find(id);
             if (client == null)
             {
-                return NotFound();
+                return Request.CreateResponse(HttpStatusCode.NotFound);
             }
 
-            return Ok(client);
+            return Request.CreateResponse(HttpStatusCode.OK, client);
         }
 
         [Route("{id:int}/orders", Name = nameof(GetClientOrders))]
         [ResponseType(typeof(Client))]
-        public IHttpActionResult GetClientOrders(int id)
+        public HttpResponseMessage GetClientOrders(int id)
         {
             var orders = db.Order.Where(p => p.ClientId == id);
-            return Ok(orders.ToList());
+            return new HttpResponseMessage()
+            {
+                ReasonPhrase = "HELLO",
+                StatusCode = HttpStatusCode.OK,
+                Content = new ObjectContent<IQueryable<Order>>(orders,
+                    GlobalConfiguration.Configuration.Formatters.JsonFormatter)
+            };
         }
 
         [Route("{id:int}/orders/{date:datetime}", Name = nameof(GetClientOrdersByDate1))]
